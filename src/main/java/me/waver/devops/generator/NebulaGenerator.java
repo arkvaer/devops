@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,9 +36,14 @@ public class NebulaGenerator {
             String targetPath = distPath + File.separatorChar + name;
             boolean exist = FileUtil.exist(targetPath);
             File targetConfigFile = new File(targetPath);
+            FileUtil.copyFile(srcPath + File.separatorChar + "ca.crt", targetPath + File.separatorChar, StandardCopyOption.REPLACE_EXISTING);
+            FileUtil.copyFile(srcPath + File.separatorChar + "install.sh", targetPath + File.separatorChar, StandardCopyOption.REPLACE_EXISTING);
+            FileUtil.copyFile(srcPath + File.separatorChar + "nebula", targetPath + File.separatorChar, StandardCopyOption.REPLACE_EXISTING);
+            FileUtil.copyFile(srcPath + File.separatorChar + "nebula-cert", targetPath + File.separatorChar, StandardCopyOption.REPLACE_EXISTING);
+            FileUtil.copyFile(srcPath + File.separatorChar + "nebula.service", targetPath + File.separatorChar, StandardCopyOption.REPLACE_EXISTING);
             if (!exist) {
                 FileUtil.mkdir(targetPath);
-                targetConfigFile = FileUtil.copyFile(srcConfigPath, targetPath + File.separatorChar + name + ".yml");
+                targetConfigFile = FileUtil.copyFile(srcConfigPath, targetPath + File.separatorChar + name + ".yml", StandardCopyOption.REPLACE_EXISTING);
             }
             FileReader reader = FileReader.create(targetConfigFile);
             List<String> readLines = reader.readLines();
@@ -49,7 +55,6 @@ public class NebulaGenerator {
                 System.out.println(readLines.get(i));
             }
             fileWriter.writeLines(readLines);
-            System.out.println("======================================");
         });
         return Result.ok();
     }
