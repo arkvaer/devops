@@ -1,0 +1,18 @@
+server:
+  port: 7777
+  servlet:
+    context-path: /dev
+  tomcat:
+    threads:
+      max: 1000
+      min-spare: 100
+    max-connections: 3000
+    connection-timeout: 36000
+spring:
+  application:
+    name: dev
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 931775308
+      max-request-size: 1000MB
